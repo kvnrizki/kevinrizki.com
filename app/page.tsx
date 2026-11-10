@@ -58,11 +58,13 @@ export default async function Home() {
                 <span aria-hidden="true">·</span>
                 <span>{featuredPost.readingTime} min read</span>
               </div>
-              <h3>{featuredPost.title}</h3>
+              <h3>
+                <Link href={`/articles/${featuredPost.slug}`}>{featuredPost.title}</Link>
+              </h3>
               <p>{featuredPost.excerpt}</p>
-              <a className="read-link" href="#articles">
-                Explore the notebook <span aria-hidden="true">↗</span>
-              </a>
+              <Link className="read-link" href={`/articles/${featuredPost.slug}`}>
+                Read article <span aria-hidden="true">↗</span>
+              </Link>
             </div>
           </article>
         </section>
@@ -83,7 +85,9 @@ export default async function Home() {
                     <span aria-hidden="true">·</span>
                     <time dateTime={post.dateTime}>{post.date}</time>
                   </div>
-                  <h3>{post.title}</h3>
+                  <h3>
+                    <Link href={`/articles/${post.slug}`}>{post.title}</Link>
+                  </h3>
                   <p>{post.excerpt}</p>
                 </div>
                 <span className="article-reading-time">{post.readingTime} min</span>

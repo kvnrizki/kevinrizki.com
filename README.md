@@ -36,7 +36,7 @@ readingTime: 4
 Write the article here in Markdown.
 ```
 
-`lib/posts.ts` reads and validates the frontmatter; `app/page.tsx` is responsible for displaying the post listings.
+`lib/posts.ts` reads and validates the frontmatter. The homepage at `app/page.tsx` lists posts, and each post opens at `/articles/<slug>` (for example, `/articles/attention-is-a-practice`).
 
 ## Learn More
 

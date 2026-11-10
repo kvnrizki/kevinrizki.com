@@ -12,6 +12,10 @@ export type Post = {
   readingTime: number;
 };
 
+export type Article = Post & {
+  content: string;
+};
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
@@ -73,4 +77,34 @@ export async function getPosts(): Promise<Post[]> {
   );
 
   return posts.sort((a, b) => b.dateTime.localeCompare(a.dateTime));
+}
+
+export async function getPostBySlug(slug: string): Promise<Article | null> {
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+    return null;
+  }
+
+  const fileName = `${slug}.md`;
+  const filePath = path.join(process.cwd(), "content", "posts", fileName);
+  let source: string;
+
+  try {
+    source = await readFile(filePath, "utf8");
+  } catch (error) {
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      error.code === "ENOENT"
+    ) {
+      return null;
+    }
+
+    throw error;
+  }
+
+  return {
+    ...parsePost(fileName, source),
+    content: matter(source).content.trim(),
+  };
 }
