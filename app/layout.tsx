@@ -14,8 +14,9 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "kevinrizki",
-  description: "A quiet space for ideas, notes, and writing.",
+  title: "Kevin Rizki — Notes on building well",
+  description:
+    "Independent notes on product, technology, and the small habits that make meaningful work possible.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

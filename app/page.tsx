@@ -1,35 +1,101 @@
-export default function Home() {
+import Link from "next/link";
+import { getPosts } from "@/lib/posts";
+
+export default async function Home() {
+  const posts = await getPosts();
+  const [featuredPost, ...recentPosts] = posts;
+
+  if (!featuredPost) {
+    throw new Error("The homepage requires at least one published post");
+  }
+
   return (
     <>
-      <header className="border-b border-[color:var(--color-border)]">
-        <div className="mx-auto flex max-w-[720px] items-center justify-between px-4 py-5 sm:px-0">
-          <div className="flex flex-col">
-            <a
-              href="/"
-              aria-label="Home"
-              className="font-sans text-[15px] font-medium tracking-[-0.04em] text-[var(--color-foreground)]"
-            >
-              kevinrizki
-            </a>
+      <header className="site-header">
+        <div className="site-header-inner">
+          <Link href="/" aria-label="kevinrizki home" className="wordmark">
+            kevinrizki<span className="wordmark-period">.</span>
+          </Link>
 
-            <p className="mt-1 text-[10px] uppercase tracking-[0.14em] text-[var(--color-muted)]">
-              You can't improve what you can't measure.
-            </p>
-          </div>
-
-          <div
-            aria-hidden="true"
-            className="flex h-5 w-5 items-center justify-center text-[11px] leading-none text-[var(--color-foreground)]"
-          >
-            ○
-          </div>
+          <nav aria-label="Main navigation" className="main-nav">
+            <a href="#articles">Writing</a>
+            <a href="mailto:hello@kevinrizki.com">Say hello <span aria-hidden="true">↗</span></a>
+          </nav>
         </div>
       </header>
 
-      <main className="mx-auto flex w-full max-w-[720px] flex-1 items-center px-4 py-20 sm:px-0 sm:py-28">
-        <p className="font-mono text-sm tracking-[0.12em] text-[var(--color-muted)] uppercase">
-          Coming soon.
-        </p>
+      <main className="home-content">
+        <section className="intro" aria-labelledby="intro-title">
+          <p className="eyebrow"><span className="status-dot" /> Independent notes on building well</p>
+          <h1 id="intro-title">
+            Make room for
+            <br />
+            <span>better questions.</span>
+          </h1>
+          <p className="intro-copy">
+            Thoughts on product, technology, and the small habits that make meaningful work possible.
+          </p>
+        </section>
+
+        <section className="featured-section" aria-labelledby="featured-heading">
+          <div className="section-heading">
+            <h2 id="featured-heading">Start here</h2>
+            <span className="section-index">01 / FEATURED</span>
+          </div>
+
+          <article className="featured-card">
+            <div className="featured-art" aria-hidden="true">
+              <span className="art-orbit art-orbit-one" />
+              <span className="art-orbit art-orbit-two" />
+              <span className="art-center">01</span>
+              <span className="art-caption">A practice in paying attention</span>
+            </div>
+            <div className="featured-copy">
+              <div className="post-meta">
+                <span>{featuredPost.category}</span>
+                <span aria-hidden="true">·</span>
+                <time dateTime={featuredPost.dateTime}>{featuredPost.date}</time>
+                <span aria-hidden="true">·</span>
+                <span>{featuredPost.readingTime} min read</span>
+              </div>
+              <h3>{featuredPost.title}</h3>
+              <p>{featuredPost.excerpt}</p>
+              <a className="read-link" href="#articles">
+                Explore the notebook <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </article>
+        </section>
+
+        <section id="articles" className="articles-section" aria-labelledby="articles-heading">
+          <div className="section-heading">
+            <h2 id="articles-heading">The notebook</h2>
+            <span className="section-index">MORE IDEAS, AT YOUR PACE</span>
+          </div>
+
+          <div className="article-list">
+            {recentPosts.map((post, index) => (
+              <article className="article-row" key={post.slug}>
+                <span className="article-number">{String(index + 2).padStart(2, "0")}</span>
+                <div className="article-content">
+                  <div className="post-meta">
+                    <span>{post.category}</span>
+                    <span aria-hidden="true">·</span>
+                    <time dateTime={post.dateTime}>{post.date}</time>
+                  </div>
+                  <h3>{post.title}</h3>
+                  <p>{post.excerpt}</p>
+                </div>
+                <span className="article-reading-time">{post.readingTime} min</span>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <footer className="site-footer">
+          <span>Written slowly, shared openly.</span>
+          <span>© {new Date().getFullYear()} Kevin Rizki</span>
+        </footer>
       </main>
     </>
   );

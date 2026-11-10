@@ -20,6 +20,24 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Writing posts
+
+Post content is kept in individual Markdown files under `content/posts/`. Each file starts with YAML frontmatter for the listing metadata (`title`, `excerpt`, `category`, `date`, and `readingTime`), followed by the article body. For example:
+
+```md
+---
+title: A useful idea
+excerpt: A short description shown on the homepage.
+category: Notes
+date: "2026-10-13"
+readingTime: 4
+---
+
+Write the article here in Markdown.
+```
+
+`lib/posts.ts` reads and validates the frontmatter; `app/page.tsx` is responsible for displaying the post listings.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
